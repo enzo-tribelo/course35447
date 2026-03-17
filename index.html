@@ -5,107 +5,247 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SFRBO Skill Sheets — Avon Fire and Rescue Service</title>
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: Arial, sans-serif; font-size: 10pt; color: #000; background: #fff; }
+  /* ── Reset ────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
+  body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 9pt;
+    color: #000;
+    background: #e0e0e0;
+  }
+
+  /* ── Page ─────────────────────────────────── */
   .page {
     width: 210mm;
-    min-height: 297mm;
-    margin: 0 auto 20px;
-    padding: 12mm 14mm;
-    border: 1px solid #ccc;
-    page-break-after: always;
+    height: 297mm;
+    background: #fff;
+    margin: 12px auto;
+    padding: 8mm 10mm 6mm;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
   }
 
   @media print {
-    body { margin: 0; }
+    body { background: #fff; }
+    .no-print { display: none !important; }
     .page {
       margin: 0;
-      border: none;
+      padding: 8mm 10mm 6mm;
+      width: 210mm;
+      height: 297mm;
       page-break-after: always;
-      width: 100%;
+      page-break-inside: avoid;
     }
-    .no-print { display: none; }
   }
 
-  /* Header */
-  .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; border-bottom: 2px solid #000; padding-bottom: 6px; }
-  .header-logo { font-size: 13pt; font-weight: bold; }
-  .header-contact { font-size: 7.5pt; text-align: right; color: #333; }
-  .course-ref { font-size: 7pt; color: #666; margin-top: 2px; }
+  /* ── Header ───────────────────────────────── */
+  .hdr {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5pt solid #000;
+    padding-bottom: 4px;
+    margin-bottom: 4px;
+  }
+  .hdr-logo { width: 140px; }
+  .hdr-logo svg { width: 140px; height: auto; }
+  .hdr-contact {
+    font-size: 7pt;
+    text-align: right;
+    line-height: 1.5;
+    color: #000;
+  }
+  .hdr-contact a { color: #000; text-decoration: none; }
 
-  h1 { font-size: 13pt; font-weight: bold; text-align: center; margin: 6px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  /* ── Course title ─────────────────────────── */
+  .course-title {
+    text-align: center;
+    font-size: 11pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.3pt;
+    margin: 3px 0;
+    border-bottom: 0.5pt solid #000;
+    padding-bottom: 3px;
+  }
 
-  .student-info { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; margin-bottom: 8px; font-size: 9.5pt; }
-  .student-info div { border-bottom: 1px solid #000; padding: 2px 0; }
-  .student-info span { font-weight: bold; }
+  /* ── Student info grid ────────────────────── */
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 0.5pt solid #000;
+    margin: 3px 0;
+    font-size: 8.5pt;
+  }
+  .info-cell {
+    padding: 2px 5px;
+    border-right: 0.5pt solid #000;
+    border-bottom: 0.5pt solid #000;
+  }
+  .info-cell:nth-child(even) { border-right: none; }
+  .info-cell:nth-last-child(-n+2) { border-bottom: none; }
+  .info-label { font-weight: bold; }
 
-  /* Tables */
-  table { width: 100%; border-collapse: collapse; font-size: 9pt; margin-bottom: 6px; }
-  th { background: #1a1a2e; color: #fff; padding: 4px 6px; text-align: left; font-size: 9pt; font-weight: bold; }
-  td { padding: 3px 6px; border-bottom: 1px solid #ddd; vertical-align: middle; }
-  tr:nth-child(even) td { background: #f5f5f5; }
+  /* ── Tables ───────────────────────────────── */
+  .table-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 0.5pt solid #000;
+    margin: 3px 0 0;
+  }
+  .table-pair table { width: 100%; border-collapse: collapse; }
+  .table-pair table:first-child { border-right: 0.5pt solid #000; }
 
-  .section-header td { background: #e8e8e8; font-weight: bold; font-size: 9pt; padding: 4px 6px; border-top: 1px solid #999; }
+  table th {
+    background: #1c3461;
+    color: #fff;
+    font-size: 8pt;
+    font-weight: bold;
+    padding: 3px 5px;
+    text-align: left;
+  }
+  table td {
+    font-size: 8pt;
+    padding: 1.5px 4px;
+    border-bottom: 0.3pt solid #ccc;
+    vertical-align: middle;
+  }
+  table tr:nth-child(even) td { background: #f0f4fa; }
+  table tr:last-child td { border-bottom: none; }
 
-  .two-col-table { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
-  .two-col-table table { margin: 0; }
-  .two-col-table table:first-child td, .two-col-table table:first-child th { border-right: 2px solid #000; }
-
-  .date-cell { width: 80px; font-weight: bold; color: #1a1a2e; }
-  .num-cell { width: 20px; color: #666; font-size: 8pt; }
+  .col-date { width: 72px; color: #1c3461; font-weight: bold; font-size: 8pt; }
+  .col-num  { width: 18px; color: #666; font-size: 7.5pt; }
 
   /* Assessment table */
-  .assessment-table th:nth-child(2) { width: 90px; }
-  .assessment-table th:nth-child(3), .assessment-table th:nth-child(4) { width: 50px; text-align: center; }
-  .assessment-table td:nth-child(3), .assessment-table td:nth-child(4) { text-align: center; }
-  .checkbox { display: inline-block; width: 14px; height: 14px; border: 1.5px solid #000; vertical-align: middle; }
-  .checked { background: #1a1a2e; }
+  .assess-wrap {
+    border: 0.5pt solid #000;
+    margin: 3px 0 0;
+  }
+  .assess-hdr {
+    background: #1c3461;
+    color: #fff;
+    font-size: 8pt;
+    font-weight: bold;
+    padding: 3px 5px;
+    line-height: 1.3;
+  }
+  .assess-hdr span { font-weight: normal; font-size: 7.5pt; }
+  .assess-table { width: 100%; border-collapse: collapse; }
+  .assess-table td { font-size: 8pt; padding: 2px 5px; border-bottom: 0.3pt solid #ccc; }
+  .assess-table tr:nth-child(even) td { background: #f0f4fa; }
+  .assess-table tr:last-child td { border-bottom: none; }
+  .assess-table .col-date { width: 72px; }
+  .assess-table .col-check { width: 44px; text-align: center; }
+  .assess-table .col-head { background: #d0d8ea; font-weight: bold; font-size: 8pt; padding: 2px 5px; }
 
-  .result-row { margin: 6px 0; font-size: 9.5pt; }
-  .result-row strong { margin-right: 12px; }
+  /* ── Checkbox ─────────────────────────────── */
+  .cb {
+    display: inline-block;
+    width: 10px; height: 10px;
+    border: 1pt solid #000;
+    vertical-align: middle;
+    margin-right: 2px;
+  }
+  .cb.checked { background: #1c3461; }
 
-  .note { font-size: 8pt; color: #444; margin: 5px 0; font-style: italic; }
+  /* ── Result row ───────────────────────────── */
+  .result-row {
+    font-size: 8.5pt;
+    margin: 3px 0 2px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .result-row strong { font-size: 8.5pt; }
 
-  .remarks-box { border: 1px solid #000; min-height: 30px; padding: 4px; margin: 4px 0 8px; }
+  /* ── Remarks ──────────────────────────────── */
+  .remarks-label { font-size: 8pt; font-weight: bold; margin: 2px 0 1px; }
+  .remarks-box {
+    border: 0.5pt solid #000;
+    min-height: 22px;
+    padding: 2px 4px;
+    margin-bottom: 3px;
+    font-size: 8pt;
+  }
 
-  .legal-text { font-size: 7.5pt; color: #333; margin: 6px 0; line-height: 1.4; }
+  /* ── Legal text ───────────────────────────── */
+  .legal {
+    font-size: 7pt;
+    color: #333;
+    line-height: 1.35;
+    margin: 2px 0 4px;
+  }
 
-  .sig-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 8px; }
-  .sig-block { font-size: 8.5pt; }
-  .sig-block div { border-bottom: 1px solid #000; padding: 2px 0; margin-bottom: 3px; min-height: 20px; }
-  .sig-label { font-weight: bold; font-size: 8pt; color: #555; }
+  /* ── Signatures ───────────────────────────── */
+  .sig-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 3px;
+  }
+  .sig-block { font-size: 8pt; }
+  .sig-row { display: flex; flex-direction: column; margin-bottom: 3px; }
+  .sig-row-label { font-weight: bold; font-size: 7.5pt; color: #444; margin-bottom: 1px; }
+  .sig-row-line { border-bottom: 0.75pt solid #000; min-height: 14px; }
 
-  /* Print button */
-  .no-print { text-align: center; padding: 12px; background: #f0f0f0; margin-bottom: 16px; }
-  .no-print button { padding: 8px 24px; font-size: 11pt; background: #1a1a2e; color: #fff; border: none; border-radius: 4px; cursor: pointer; }
-  .no-print button:hover { background: #2a2a4e; }
+  /* ── Doc ref ──────────────────────────────── */
+  .doc-ref { font-size: 6.5pt; color: #777; text-align: center; margin-bottom: 2px; }
+
+  /* ── Note ─────────────────────────────────── */
+  .note { font-size: 7pt; color: #444; font-style: italic; margin: 2px 0; line-height: 1.3; }
+
+  /* ── Print button ─────────────────────────── */
+  .no-print {
+    text-align: center;
+    padding: 10px;
+    background: #333;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .no-print button {
+    padding: 7px 20px;
+    font-size: 10pt;
+    background: #1c3461;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+  }
+  .no-print button:hover { background: #2a4a85; }
 </style>
 </head>
 <body>
 
 <div class="no-print">
-  <button onclick="window.print()">🖨️ Print All 4 Sheets</button>
+  <button onclick="window.print()">🖨️ Print All 4 Sheets (A4)</button>
 </div>
 
 <script>
+// ── Data ──────────────────────────────────────────────────────────────
 const STUDENTS = [
-  { name: "Joshua Arberry", ref: "101-00044600266231-20260313" },
-  { name: "Ben Crawford",   ref: "101-00044600266232-20260313" },
-  { name: "Ben Newman",     ref: "101-00044600266234-20260313" },
-  { name: "Paul Johnson",   ref: "101-00044600266237-20260313" },
+  { name: "Joshua Arberry", ref: "SFRBO v23.1 · 101-00044600266231-20260313" },
+  { name: "Ben Crawford",   ref: "SFRBO v23.1 · 101-00044600266232-20260313" },
+  { name: "Ben Newman",     ref: "SFRBO v23.1 · 101-00044600266234-20260313" },
+  { name: "Paul Johnson",   ref: "SFRBO v23.1 · 101-00044600266237-20260313" },
 ];
 
 const THEORY = [
-  [1, "Rescue 3 philosophy"],
-  [2, "Water rescue training standards"],
-  [3, "Personal equipment"],
-  [4, "Dynamic risk assessment and incident size-up"],
-  [5, "Pre-planning"],
-  [6, "Medical and decontamination considerations"],
-  [7, "Navigation and route planning"],
-  [8, "Communications"],
-  [9, "Crew operational roles"],
+  [1,  "Rescue 3 philosophy"],
+  [2,  "Water rescue training standards"],
+  [3,  "Personal equipment"],
+  [4,  "Dynamic risk assessment and incident size-up"],
+  [5,  "Pre-planning"],
+  [6,  "Medical and decontamination considerations"],
+  [7,  "Navigation and route planning"],
+  [8,  "Communications"],
+  [9,  "Crew operational roles"],
   [10, "Multiple boat operations"],
   [11, "Floodwater dynamics and hazards"],
   [12, "Boat, hull and drive types"],
@@ -147,130 +287,142 @@ const ASSESSMENTS = [
   "Flips and rights",
 ];
 
-// Date assignments
-function getDate(itemNum) {
-  if (itemNum >= 1 && itemNum <= 18) return "09/03/2026";
-  if (itemNum >= 19 && itemNum <= 27) return "10/03/2026";
+function itemDate(n) {
+  if (n <= 18) return "09/03/2026";
+  if (n <= 27) return "10/03/2026";
   return "11/03/2026";
 }
 
-function buildPage(student) {
-  const theoryLeft = THEORY.slice(0, 9);
-  const theoryRight = THEORY.slice(9, 18);
-  const practLeft = PRACTICAL.slice(0, 9);
-  const practRight = PRACTICAL.slice(9, 18);
+// ── Logo SVG (from rescue3europe.com, white on dark bg → recoloured dark on white) ──
+const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 315 100">
+  <rect width="315" height="100" rx="4" fill="#1c3461"/>
+  <g fill="#fff">
+    <text x="12" y="38" font-family="Arial,sans-serif" font-size="22" font-weight="bold" letter-spacing="1">RESCUE</text>
+    <text x="158" y="38" font-family="Arial,sans-serif" font-size="22" font-weight="bold" fill="#f04130">3</text>
+    <text x="12" y="60" font-family="Arial,sans-serif" font-size="11" letter-spacing="2">E U R O P E</text>
+    <line x1="12" y1="66" x2="303" y2="66" stroke="#fff" stroke-width="1" opacity="0.4"/>
+    <text x="12" y="82" font-family="Arial,sans-serif" font-size="7.5">www.rescue3europe.com</text>
+    <text x="12" y="93" font-family="Arial,sans-serif" font-size="7.5">+44 (0) 1978 869069  ·  info@rescue3europe.com</text>
+  </g>
+</svg>`;
 
-  function rows(items) {
-    return items.map(([num, label]) => `
-      <tr>
-        <td class="num-cell">${num}.</td>
-        <td>${label}</td>
-        <td class="date-cell">${getDate(num)}</td>
-      </tr>`).join('');
+// ── Build one page ─────────────────────────────────────────────────────
+function buildPage(s) {
+  const tLeft  = THEORY.slice(0, 9);
+  const tRight = THEORY.slice(9);
+  const pLeft  = PRACTICAL.slice(0, 9);
+  const pRight = PRACTICAL.slice(9);
+
+  function tRows(items) {
+    return items.map(([n, label]) =>
+      `<tr><td class="col-num">${n}.</td><td>${label}</td><td class="col-date">${itemDate(n)}</td></tr>`
+    ).join('');
   }
 
-  function assessRows() {
-    return ASSESSMENTS.map(a => `
-      <tr>
+  function aRows() {
+    return ASSESSMENTS.map(a =>
+      `<tr>
         <td>${a}</td>
-        <td class="date-cell">11/03/2026</td>
-        <td style="text-align:center"><span class="checkbox checked"></span></td>
-        <td style="text-align:center"><span class="checkbox"></span></td>
-      </tr>`).join('');
+        <td class="col-date">11/03/2026</td>
+        <td class="col-check"><span class="cb checked"></span></td>
+        <td class="col-check"><span class="cb"></span></td>
+      </tr>`
+    ).join('');
   }
 
   return `
 <div class="page">
-  <div class="header">
-    <div>
-      <div class="header-logo">Rescue 3 Europe</div>
-      <div class="course-ref">SFRBO v23.1 — ${student.ref}</div>
-    </div>
-    <div class="header-contact">
+
+  <!-- Header -->
+  <div class="hdr">
+    <div class="hdr-logo">${LOGO_SVG}</div>
+    <div class="hdr-contact">
       www.rescue3europe.com<br>
       +44 (0) 1978 869069<br>
       info@rescue3europe.com
     </div>
   </div>
 
-  <h1>Swiftwater and Flood Rescue Boat Operator</h1>
+  <div class="doc-ref">${s.ref}</div>
 
-  <div class="student-info">
-    <div><span>Student:</span> ${student.name}</div>
-    <div><span>Training provider:</span> Avon Fire and Rescue Service</div>
-    <div><span>Date skill sheet started:</span> 09/03/2026</div>
-    <div><span>Location of course:</span> Avon</div>
+  <div class="course-title">Swiftwater and Flood Rescue Boat Operator</div>
+
+  <!-- Student info -->
+  <div class="info-grid">
+    <div class="info-cell"><span class="info-label">Student: </span>${s.name}</div>
+    <div class="info-cell"><span class="info-label">Training provider: </span>Avon Fire and Rescue Service</div>
+    <div class="info-cell"><span class="info-label">Date skill sheet started: </span>09/03/2026</div>
+    <div class="info-cell"><span class="info-label">Location of course: </span>Avon</div>
   </div>
 
   <!-- Theory -->
-  <div class="two-col-table">
+  <div class="table-pair">
     <table>
-      <thead><tr><th colspan="2">Theory</th><th style="width:80px">Date</th></tr></thead>
-      <tbody>${rows(theoryLeft)}</tbody>
+      <thead><tr><th colspan="2">Theory</th><th>Date</th></tr></thead>
+      <tbody>${tRows(tLeft)}</tbody>
     </table>
     <table>
-      <thead><tr><th colspan="2">Theory</th><th style="width:80px">Date</th></tr></thead>
-      <tbody>${rows(theoryRight)}</tbody>
+      <thead><tr><th colspan="2">Theory</th><th>Date</th></tr></thead>
+      <tbody>${tRows(tRight)}</tbody>
     </table>
   </div>
 
   <!-- Practical -->
-  <div class="two-col-table" style="margin-top:4px">
+  <div class="table-pair" style="margin-top:2px">
     <table>
-      <thead><tr><th colspan="2">Practical</th><th style="width:80px">Date</th></tr></thead>
-      <tbody>${rows(practLeft)}</tbody>
+      <thead><tr><th colspan="2">Practical</th><th>Date</th></tr></thead>
+      <tbody>${tRows(pLeft)}</tbody>
     </table>
     <table>
-      <thead><tr><th colspan="2">Practical</th><th style="width:80px">Date</th></tr></thead>
-      <tbody>${rows(practRight)}</tbody>
+      <thead><tr><th colspan="2">Practical</th><th>Date</th></tr></thead>
+      <tbody>${tRows(pRight)}</tbody>
     </table>
   </div>
 
   <p class="note">Students must date all elements above, with the exception of 'if used by agency' only if their organisation doesn't use those techniques. No other elements should be taught on the course without the express prior written permission of Rescue 3.</p>
 
   <!-- Assessment -->
-  <table class="assessment-table" style="margin-top:6px">
-    <thead>
-      <tr>
-        <th>Assessment criteria: <small style="font-weight:normal;font-size:8pt">The student's marks must be at 3 or above to pass the below assessments, based on the Rescue 3 assessment criteria document.</small></th>
-        <th>Date</th>
-        <th>Pass</th>
-        <th>Fail</th>
-      </tr>
-    </thead>
-    <tbody>${assessRows()}</tbody>
-  </table>
+  <div class="assess-wrap" style="margin-top:3px">
+    <div class="assess-hdr">Assessment criteria: <span>The student's marks must be at 3 or above to pass the below assessments, based on the Rescue 3 assessment criteria document.</span></div>
+    <table class="assess-table">
+      <thead>
+        <tr>
+          <td class="col-head">Assessment</td>
+          <td class="col-head col-date">Date</td>
+          <td class="col-head col-check">Pass</td>
+          <td class="col-head col-check">Fail</td>
+        </tr>
+      </thead>
+      <tbody>${aRows()}</tbody>
+    </table>
+  </div>
 
   <div class="result-row">
     <strong>Result:</strong>
-    <span class="checkbox checked"></span> Pass &nbsp;&nbsp;
-    <span class="checkbox"></span> Fail
+    <span><span class="cb checked"></span> Pass</span>
+    <span><span class="cb"></span> Fail</span>
   </div>
 
-  <div style="font-size:9pt;margin:4px 0 2px;"><strong>Remarks:</strong></div>
+  <div class="remarks-label">Remarks:</div>
   <div class="remarks-box"></div>
 
-  <p class="legal-text">The undersigned agree that the student has received training and assessment in accordance with the Rescue 3 course standards, learning outcomes and assessment criteria. By signing, the student consents to providing their name and contact details to the training provider and Rescue 3 for the purposes of administering their course attendance and accreditation.<br><br>
+  <p class="legal">The undersigned agree that the student has received training and assessment in accordance with the Rescue 3 course standards, learning outcomes and assessment criteria. By signing, the student consents to providing their name and contact details to the training provider and Rescue 3 for the purposes of administering their course attendance and accreditation.<br>
   By signing below, you are agreeing that you took part in the above activities on the day written in the date column.</p>
 
+  <!-- Signatures -->
   <div class="sig-grid">
     <div class="sig-block">
-      <div class="sig-label">Student signature</div>
-      <div></div>
-      <div class="sig-label">Print name</div>
-      <div></div>
-      <div class="sig-label">Date</div>
-      <div></div>
+      <div class="sig-row"><div class="sig-row-label">Student signature</div><div class="sig-row-line"></div></div>
+      <div class="sig-row"><div class="sig-row-label">Print name</div><div class="sig-row-line"></div></div>
+      <div class="sig-row"><div class="sig-row-label">Date</div><div class="sig-row-line"></div></div>
     </div>
     <div class="sig-block">
-      <div class="sig-label">Instructor signature</div>
-      <div></div>
-      <div class="sig-label">Print name</div>
-      <div></div>
-      <div class="sig-label">Date</div>
-      <div></div>
+      <div class="sig-row"><div class="sig-row-label">Instructor signature</div><div class="sig-row-line"></div></div>
+      <div class="sig-row"><div class="sig-row-label">Print name</div><div class="sig-row-line"></div></div>
+      <div class="sig-row"><div class="sig-row-label">Date</div><div class="sig-row-line"></div></div>
     </div>
   </div>
+
 </div>`;
 }
 
